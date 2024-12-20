@@ -1,0 +1,42 @@
+# Функція для обчислення оберненого по модулю числа
+def mod_inverse(a, p):
+    return pow(a, p - 2, p)
+
+# Функція для додавання двох точок на еліптичній кривій
+def point_addition(P, Q, a, p):
+    if P == Q:  # Обчислення при подвоєнні точки
+        if P[1] == 0:
+            return None  # Немає розв'язку
+        s = (3 * P[0]**2 + a) * mod_inverse(2 * P[1], p) % p
+    else:  # Обчислення при додаванні різних точок
+        if P[0] == Q[0] and (P[1] + Q[1]) % p == 0:
+            return None  # Точка на нескінченності
+        s = (Q[1] - P[1]) * mod_inverse(Q[0] - P[0], p) % p
+    
+    x_r = (s**2 - P[0] - Q[0]) % p
+    y_r = (s * (P[0] - x_r) - P[1]) % p
+    return (x_r, y_r)
+
+# Функція для обчислення порядку точки
+def point_order(G, a, b, p):
+    n = 1
+    current_point = G
+    while current_point is not None:
+        current_point = point_addition(current_point, G, a, p)
+        n += 1
+        if current_point == G:
+            break
+    return n
+
+# Задання параметрів еліптичної кривої
+a = 1
+b = 1
+p = 23
+
+# Задана точка G
+G = (17, 25)
+
+# Обчислення порядку точки
+order = point_order(G, a, b, p)
+print(f"Порядок точки G = {G}: {order}")
+І

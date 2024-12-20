@@ -1,0 +1,15 @@
+def find_points_on_curve():
+    p = 23  # модуль
+    points = []
+
+    for x in range(p):
+        right_side = (x**3 + x + 1) % p  # Обчислюємо праву частину рівняння
+        for y in range(p):
+            if (y**2) % p == right_side:  # Перевіряємо рівність для y^2
+                points.append((x, y))
+    
+    return points
+
+# Виклик функції та друк результатів
+points = find_points_on_curve()
+print(f"Знайдені точки на еліптичній кривій: {points}")
